@@ -1,14 +1,22 @@
 
-// Script parameters
-BKG = true;
-BKG_COLOR = "#fffffff";
-BKG_GRADIENT_PERCENT = 70;
-BKG_MAX_OPACITY = 0.8;
+// Script global parameters
+// TODO May be overridden by attributes
 
-PERSPECTIVE = true;
-PERSPECTIVE_SIZE = 1000;
-MAX_ROTATE_X = 6;
-MAX_ROTATE_Y = 10;
+const BKG = true;
+const BKG_COLOR = "#fffffff";
+const BKG_GRADIENT_PERCENT = 70;
+const BKG_MAX_OPACITY = 0.8;
+
+const PERSPECTIVE = true;
+const PERSPECTIVE_SIZE = 1000;
+const MAX_ROTATE_X = 6;
+const MAX_ROTATE_Y = 10;
+
+
+// TODO add paralax
+const PARALLAX = true;
+
+
 
 
 
@@ -16,8 +24,8 @@ var Parallax = {
 
 	items: [],
 
-	init: function() {
-		this.items = document.getElementsByClassName("parallax-container");
+	init: function(name) {
+		this.items = document.getElementsByClassName(name);
 		for (let i = 0; i < this.items.length; i++) {
 			this.items[i].onmouseover = this.items[i].onmousemove = function(event) {
 				Parallax.update(this, event);

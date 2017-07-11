@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Класний паралакс</title>
+		<title>Класна карточка
+		</title>
 		<style>
 			body {
 				display: flex;
@@ -22,6 +23,10 @@
 				height: 100%;
 				background: url("/res/bkg.jpg");
 				background-size: cover;
+			}
+			.bkg .parallax-content {
+				width: 100%;
+				height: 100%;
 				position: relative;
 			}
 			.bkg img {
@@ -35,12 +40,14 @@
 		<script src="/parallax/parallax.js"></script>
 		<!-- End parallax plugin-->
 	</head>
-	<body onload="Parallax.init()">
+	<body onload="Parallax.init('parallax-container')">
 		<div class="parallax-container">
 			<div class="bkg">
-				<img src="/res/circle.svg" style="top:15%; left: 70%">
-				<img src="/res/circle.svg" style="top:35%; left: 20%">
-				<img src="/res/circle.svg" style="top:75%; left: 50%">
+				<div class="parallax-content">
+					<img src="/res/circle.svg" style="top:15%; left: 70%">
+					<img src="/res/circle.svg" style="top:35%; left: 20%">
+					<img src="/res/circle.svg" style="top:75%; left: 50%">
+				</div>
 			</div>
 		</div>
 	</body>
