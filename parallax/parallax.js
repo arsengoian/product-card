@@ -2,15 +2,15 @@
 // Script global parameters
 // TODO May be overridden by attributes
 
-const BKG = true;
-const BKG_COLOR = "#fffffff";
-const BKG_GRADIENT_PERCENT = 70;
-const BKG_MAX_OPACITY = 0.8;
+const BKG                  = true,
+	  BKG_COLOR            = "#fffffff",
+	  BKG_GRADIENT_PERCENT = 70,
+	  BKG_MAX_OPACITY      = 0.8;
 
-const PERSPECTIVE = true;
-const PERSPECTIVE_SIZE = 1000;
-const MAX_ROTATE_X = 6;
-const MAX_ROTATE_Y = 10;
+const PERSPECTIVE      = true,
+      PERSPECTIVE_SIZE = 1000,
+      MAX_ROTATE_X     = 6,
+      MAX_ROTATE_Y     = 10;
 
 
 // TODO add paralax
@@ -20,7 +20,7 @@ const PARALLAX = true;
 
 
 
-var Parallax = {
+let Parallax = {
 
 	items: [],
 
@@ -29,10 +29,10 @@ var Parallax = {
 		for (let i = 0; i < this.items.length; i++) {
 			this.items[i].onmouseover = this.items[i].onmousemove = function(event) {
 				Parallax.update(this, event);
-			}
+			};
 			this.items[i].onmouseout = function(event) {
 				Parallax.untrack(this);
-			}
+			};
 
 			this.items[i].classList.add('io');
 
@@ -47,15 +47,18 @@ var Parallax = {
 		}
 	},
 
-
 	update: function(item, event) {
-
-		var x = event.clientX - item.getBoundingClientRect().left;
-		var y = event.clientY - item.getBoundingClientRect().top;
-		var center = {x: item.clientWidth/2, y: item.clientHeight/2}
+		let x = event.clientX - item.getBoundingClientRect().left,
+			y = event.clientY - item.getBoundingClientRect().top,
+			center = {
+					x: item.clientWidth/2,
+					y: item.clientHeight/2
+				};
+		// Fix jagged edges in Firefox
+		item.style.outline = '1px solid transparent';
 
 		angle = this.calculateAngle(center, x, y);
-		strength = this.calculateStrength(center, x, y, angle)
+		strength = this.calculateStrength(center, x, y, angle);
 
 		if (item.classList.contains('io') && !item.awaiting) {
 			item.awaiting = true;
@@ -74,7 +77,6 @@ var Parallax = {
 
 	},
 
-
 	untrack: function(item) {
 		item.classList.add('io');
 		if (BKG) {
@@ -84,7 +86,6 @@ var Parallax = {
 			item.style.transform = "none";
 		}
 	},
-
 
 	bkg: function(div, center, angle, strength) {
 		div.backgroundImage = "linear-gradient(" + -angle + "deg, white, transparent " + BKG_GRADIENT_PERCENT + "%)";
@@ -98,41 +99,39 @@ var Parallax = {
 		div.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";	
 	},
 
-	calculateAngle(center, x, y) {
-
+	calculateAngle: function(center, x, y) {
 		// Rotating axi to correspond to tangent definition
 		let dx = y - center.y;
 		let dy = x - center.x;
 
 		// Calculating angle
-		let tan = dy/dx;
-		let arctan = Math.atan(tan)/Math.PI;
-		if (dx < 0)
-			arctan = arctan + 1;
-		return arctan * 180;
-
+		let tan  = dy/dx,
+			atan = Math.atan(tan)/Math.PI;
+		
+		if (dx < 0) atan = atan + 1;
+		return atan * 180;
 	},
 
 	calculateStrength: function(center, x, y, angle) {
-
 		// Calculating the distance from the center to the border on secant line
-		let foundationAngle = Math.atan(center.y/center.x)/Math.PI * 180;
-		let transposedAngle = (angle + 90) % 180;
-		let triangleAngle = Math.abs((angle + 90) % 180 - 90);
+		let foundationAngle = Math.atan(center.y/center.x)/Math.PI * 180,
+			transposedAngle = (angle + 90) % 180,
+			triangleAngle   = Math.abs((angle + 90) % 180 - 90),
+			baseDistance    = null;
+
 		if (transposedAngle < foundationAngle || transposedAngle > 180 - foundationAngle) {
-			var baseDistance = center.x;
+			baseDistance = center.x;
 		} else {
-			var baseDistance = center.y;
+			baseDistance = center.y;
 			triangleAngle = 90 - triangleAngle;
 		}
-		let sin = Math.sin(triangleAngle * Math.PI/180);
-		let centerDiagonal = baseDistance/sin;
+
+		let sin = Math.sin(triangleAngle * Math.PI/180),
+		 	centerDiagonal = baseDistance/sin;
 
 		// Calculating distance from the point to the center
 		let distance = Math.sqrt(Math.pow(x - center.x, 2) + Math.pow(y - center.y, 2));
 
 		return distance/centerDiagonal;
 	}
-
-}
-
+};
