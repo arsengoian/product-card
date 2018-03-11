@@ -11,7 +11,7 @@ Check out the trigonometry, I'm kinda proud of it
 
 ### **Set-up instruction**
 
-1. Include `parallax.js` and `parallax.css` files from `free-slider` folder to your website's HTML 	`<head>` tag
+1. Include `parallax.js` and `parallax.css` files from `parallax` folder to your website's HTML 	`<head>` tag
 
 2. Include the following script:
 
